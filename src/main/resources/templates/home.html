@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+				xmlns:sec="http://www.thymeleaf.org/thymleaf-extras-springsecurity5">
+	<head>
+		<title>Home</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <!-- For Icons -->
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+		
+		
+		<!-- CUSTOM CSS -->
+		<link rel="stylesheet" href="/css/custom.css">
+		<!-- Favicon, only PNG supported -->
+		<link rel="icon" sizes="72x72" href="/img/favicon.png">
+		<!-- CUSTOM JS -->
+		<script src="/js/custom.js"></script>
+		
+	</head>
+	<body>
+		<div class="jumbotron jumbotron_custom text-center">
+			<img class="img-fluid" src="/img/logo.jpg" alt="logo" onerror="reloadPage()">
+		</div>
+		<div class="container-fluid">
+			<div th:if="${otherErrors} != null" class="row">
+				<div class="p-3 alert alert-danger alert-dismissible">
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+					<div th:each="err : ${otherErrors}" th:text="${err}"></div>
+				</div>
+			</div>
+			<div th:if="${successMsg} != null" class="row">
+				<div class="p-3 alert alert-success alert-dismissible">
+					<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+					<h3 th:text="${successMsg}"></h3>
+					<h3 th:text="${homePageStringArrayMap.fileUploadMessage}"></h3>
+				</div>
+			</div>
+			
+			<div class="row mx-4">
+				<!-- Offcanvas Sidebar -->
+				<div class="offcanvas offcanvas-start" id="demo">
+					<div class="offcanvas-header">
+						<h1 class="offcanvas-title">About Us</h1>
+						<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
+						</div>
+						<div class="offcanvas-body">
+						<h3>Designing &amp; Printing Wholesale Company</h3>
+						<p style="text-align: justify;">Welcome to Raj Prints, your go-to destination for top-notch design and printing solutions. As a wholesale reseller company with a rich legacy since 2011, we specialize in transforming your ideas into tangible, high-quality products. From business cards and flyers to banners, t-shirts, and hats, we cater to a diverse range of printing needs. Whether your order is small or large, we pride ourselves on delivering unmatched quality and expert advice. Contact us today to bring your vision to life, and request your quote for a seamless printing experience.</p>
+						
+						<hr style="border-top: gray dashed 2px;"/>
+						
+						<h3>Contact Us</h3>
+						<span th:text="${homePageStringArrayMap.adminEmail}"></span>
+						<br/>
+						<span>Will contact back within 2 business days.</span>
+						
+						<hr style="border-top: gray dashed 2px;"/>
+						
+						<h3 class="animate-charcter">Current Offer</h3>
+						<p>New Customer First Order - 10% Discount</p>
+					</div>
+				</div>
+	
+				<!-- Button to open the offcanvas sidebar -->
+				<div class="col-md-1">
+				<a href="#" class="btn btn-primary d-md-none" data-bs-toggle="offcanvas" data-bs-target="#demo">
+					<i class="fa fa-bars"></i> Expand
+				</a>
+				</div>
+			</div>
+			<div class="row m-4">
+				<div class="col-md-4 d-none d-md-inline"> <!-- d-none d-sm-inline will hide on small screens -->
+					
+					<h3>About Us</h3>
+					<h5>Designing &amp; Printing Wholesale Company</h5>
+					<p style="text-align: justify;">Welcome to Raj Prints, your go-to destination for top-notch design and printing solutions. As a wholesale reseller company with a rich legacy since 2011, we specialize in transforming your ideas into tangible, high-quality products. From business cards and flyers to banners, t-shirts, and hats, we cater to a diverse range of printing needs. Whether your order is small or large, we pride ourselves on delivering unmatched quality and expert advice. Contact us today to bring your vision to life, and request your quote for a seamless printing experience.</p>
+					
+					<hr style="border-top: gray dashed 2px;"/>
+					
+					<h3>Contact Us</h3>
+					<span th:text="${homePageStringArrayMap.adminEmail}"></span>
+					<br/>
+					<span>Will contact back within 2 business days.</span>
+					
+					<hr style="border-top: gray dashed 2px;"/>
+					
+					<h3 class="animate-charcter">Current Offer</h3>
+					<p>New Customer First Order - 10% Discount</p>
+				</div>
+				<div class="col-md-8">
+					<div class="card">
+						<div class="card-header bg-primary text-white">Get Quote</div>
+						<div class="card-body">
+							<form th:action="@{/quote}" method="post">
+								<div th:object="${orderInquiry.productDetails.customer}">
+									<div class="row">
+										<div class="col-sm-3 mb-4">
+											<label th:for="productDetails.customer.firstName" class="form-label">First Name:</label>
+											<input type="text" class="form-control" th:field="*{firstName}" placeholder="Enter First Name" >
+											<span class="text-danger small" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
+										</div>
+										<div class="col-sm-3 mb-4">
+											<label th:for="productDetails.customer.lastName" class="form-label">Last Name:</label>
+											<input type="text" class="form-control" th:field="*{lastName}" placeholder="Enter Last Name" >
+											<span class="text-danger small" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+										</div>
+										<div class="col-sm-3 mb-4">
+											<label th:for="productDetails.customer.phone" class="form-label">Phone Number:</label>
+											<input type="number" class="form-control" th:field="*{phone}" placeholder="Enter 10 Digit Phone" min="1000000000" max="9999999999">
+											<span class="text-danger small" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></span>
+										</div>
+										<div class="col-sm-3 mb-4">
+											<label th:for="productDetails.customer.email" class="form-label">Email:</label>
+											<input type="email" class="form-control" th:field="*{email}" placeholder="Enter Email" >
+											<span class="text-danger small" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-3 mb-4">
+											<label th:for="productDetails.customer.street" class="form-label">Street:</label>
+											<input type="text" class="form-control" th:field="*{street}" placeholder="Enter Street" >
+											<span class="text-danger small" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></span>
+										</div>
+										<div class="col-sm-3 mb-4">
+											<label th:for="productDetails.customer.city" class="form-label">City:</label>
+											<input type="text" class="form-control" th:field="*{city}" placeholder="Enter City" >
+											<span class="text-danger small" th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></span>
+										</div>
+										<div class="col-sm-3 mb-4">
+											<label th:for="productDetails.customer.state" class="form-label">State:</label>
+											<select th:field="*{state}" class="form-control">
+												<option th:value="${stateName}" th:each="stateName : ${frontEndCommonMap.states}" th:text="${#strings.replace(stateName,'_', ' ')}"></option>
+											</select>
+											<span class="text-danger small" th:if="${#fields.hasErrors('state')}" th:errors="*{state}"></span>
+										</div>
+										<div class="col-sm-3 mb-4">
+											<label th:for="productDetails.customer.zip" class="form-label">Zip Code:</label>
+											<input type="number" class="form-control" th:field="*{zip}" placeholder="Enter 5 Digit Zip Code" >
+												<!-- min="10000" max="99999" maxlength="5"  -->
+											<span class="text-danger small" th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}"></span>
+										</div>
+									</div>
+								</div>
+								
+								<hr style="border-top: gray dashed 2px;"/>
+								
+								<div th:object="${orderInquiry.productDetails}">
+									<div class="row">
+										<div class="col-sm-12 my-4">
+ 											<label th:for="productDetails.productType" class="form-label mb-0">Product Type:</label>
+											<div class="row">
+												<div class="col-sm-4" th:each="productType : ${homePageStringArrayMap.productTypes}" >
+													<!-- th:field="*{productType}" which comes in "object" replaced with th:value="${productType}" which comes from looping list -->
+													<span class="productType border mt-2 p-2 d-flex justify-content-center border-secondary" th:id="'productType_'+${productType}" th:text="${productType}" th:attr="onclick=|selectProductType('${productType}')|"></span>
+												</div>
+												<input type="text" class="form-control" th:field="*{productType}" hidden="hidden"/>
+											</div>
+											<span class="text-danger small" th:if="${#fields.hasErrors('productType')}" th:errors="*{productType}"></span>
+										</div>
+									</div>
+
+									<div class="row">
+										<div class="col-sm-12 mb-4">
+											<label th:for="productDetails.productName" class="form-label">Product Name:</label>
+											<select th:field="*{productName}" class="form-control" th:attr="onChange=|selectProductSize('${homePageStringArrayMap.productNames_OffsetList}', '${homePageStringArrayMap.productNames_SignsList}', '${homePageStringArrayMap.productNames_OtherList}', '${homePageStringArrayMap.productSizes_OffsetList}', '${homePageStringArrayMap.productSizes_SignsList}', '${homePageStringArrayMap.productSizes_OtherList}')|">
+												<option id="productName_default" value="" selected="selected">select any one</option>
+												<option class="productType_Offset productName" th:value="${productName}" th:each="productName : ${homePageStringArrayMap.productNames_OffsetList}" th:text="${#strings.replace(productName,'_', ' ')}" hidden="hidden"></option>
+												<option class="productType_Signs productName" th:value="${productName}" th:each="productName : ${homePageStringArrayMap.productNames_SignsList}" th:text="${#strings.replace(productName,'_', ' ')}" hidden="hidden"></option>
+												<option class="productType_Other productName" th:value="${productName}" th:each="productName : ${homePageStringArrayMap.productNames_OtherList}" th:text="${#strings.replace(productName,'_', ' ')}" hidden="hidden"></option>
+											</select>
+											<span class="text-danger small" th:if="${#fields.hasErrors('productName')}" th:errors="*{productName}"></span>
+										</div>
+									</div>
+									
+									<div id="hideForOtherProductType">
+										<div class="row">
+											<div class="col-sm-4 mb-4">
+												<label th:for="productDetails.height" class="form-label">Height:</label>
+												<input type="number" step="0.01" min="0.01" max="999.99" class="form-control" th:name="productDetails.height" th:id="productDetails.height" th:value="*{#numbers.formatDecimal(height,1,2)}" placeholder="Max 3 integer digits & 2 decimal digits allowed">
+												<span class="text-danger small" th:if="${#fields.hasErrors('height')}" th:errors="*{height}"></span>
+											</div>
+											<div class="col-sm-4 mb-4">
+												<label th:for="productDetails.width" class="form-label">Width:</label>
+												<input type="number" step="0.01" min="0.01" max="999.99" class="form-control" th:name="productDetails.width" th:id="productDetails.width" th:value="*{#numbers.formatDecimal(width,1,2)}" placeholder="Max 3 integer digits & 2 decimal digits allowed">
+												<span class="text-danger small" th:if="${#fields.hasErrors('width')}" th:errors="*{width}"></span>
+											</div>
+											<div class="col-sm-4 mb-4">
+												<label th:for="productDetails.paperType" class="form-label">Paper Type:</label>
+												<select th:field="*{paperType}" class="form-control">
+													<optgroup th:label="${entity.key}" th:each="entity : ${homePageStringArrayMap.paperTypesMap}" >
+														<option th:value="${paperType}" th:each="paperType : ${entity.value}" th:text="${#strings.replace(paperType,'_', ' ')}"></option>
+													</optgroup>
+												</select>
+												<span class="text-danger small" th:if="${#fields.hasErrors('paperType')}" th:errors="*{paperType}"></span>
+											</div>
+										</div>
+										<div id="hideForSignsAndOtherProductType">
+											<div class="row">
+												<div class="col-sm-4 mb-4">
+													<label th:for="productDetails.coatingType" class="form-label">Coating Type:</label>
+													<select th:field="*{coatingType}" class="form-control">
+														<option th:value="${coatingType}" th:each="coatingType : ${homePageStringArrayMap.coatingTypes}" th:text="${#strings.replace(coatingType,'_', ' ')}"></option>
+													</select>
+													<span class="text-danger small" th:if="${#fields.hasErrors('coatingType')}" th:errors="*{coatingType}"></span>
+												</div>
+												<div class="col-sm-4 mb-4">
+													<label th:for="productDetails.folding" class="form-label">Folding:</label>
+													<select th:field="*{folding}" class="form-control">
+														<optgroup th:label="${entity.key}" th:each="entity : ${homePageStringArrayMap.foldingsMap}" >
+															<option th:value="${folding}" th:each="folding : ${entity.value}" th:text="${#strings.replace(folding,'_', ' ')}"></option>
+														</optgroup>
+													</select>
+													<span class="text-danger small" th:if="${#fields.hasErrors('folding')}" th:errors="*{folding}"></span>
+												</div>
+												<div class="col-sm-4 mb-4">
+													<label th:for="productDetails.perforation" class="form-label">Perforation:</label>
+													<select th:field="*{perforation}" class="form-control">
+														<option th:value="${perforation}" th:each="perforation : ${homePageStringArrayMap.perforations}" th:text="${#strings.replace(perforation,'_', ' ')}"></option>
+													</select>
+													<span class="text-danger small" th:if="${#fields.hasErrors('perforation')}" th:errors="*{perforation}"></span>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-4 mb-4">
+													<label th:for="productDetails.coatingSide" class="form-label">Coating Side:</label>
+													<select th:field="*{coatingSide}" class="form-control">
+														<option th:value="${coatingSide}" th:each="coatingSide : ${homePageStringArrayMap.coatingSides}" th:text="${#strings.replace(coatingSide,'_', ' ')}"></option>
+													</select>
+													<span class="text-danger small" th:if="${#fields.hasErrors('coatingSide')}" th:errors="*{coatingSide}"></span>
+												</div>
+												<div class="col-sm-4 mb-4">
+													<label th:for="productDetails.printSide" class="form-label">Print Side:</label>
+													<select th:field="*{printSide}" class="form-control">
+														<option th:value="${printSide}" th:each="printSide : ${homePageStringArrayMap.printSides}" th:text="${#strings.replace(printSide,'_', ' ')}"></option>
+													</select>
+													<span class="text-danger small" th:if="${#fields.hasErrors('printSide')}" th:errors="*{printSide}"></span>
+												</div>
+												<div class="col-sm-4 mb-4">
+													<label th:for="productDetails.color" class="form-label">Color:</label>
+													<select th:field="*{color}" class="form-control">
+														<option th:value="${color}" th:each="color : ${homePageStringArrayMap.colors}" th:text="${#strings.replace(color,'_', ' ')}"></option>
+													</select>
+													<span class="text-danger small" th:if="${#fields.hasErrors('color')}" th:errors="*{color}"></span>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-4 mb-4">
+													<span class="form-label">Binding?</span>
+									 				<div><!-- So that yes and no can come in 1 line AFTER main label -->
+										 				<div class="form-check form-check-inline">
+															<input type="radio" class="form-check-input" th:field="*{binding}" value="Yes" >
+															<label th:for="productDetails.binding1" class="form-check-label">Yes</label>
+														</div>
+										 				<div class="form-check form-check-inline">
+															<input type="radio" class="form-check-input" th:field="*{binding}" value="No">
+															<label th:for="productDetails.binding2" class="form-check-label">No</label>
+														</div>
+													</div>
+													<span class="text-danger small" th:if="${#fields.hasErrors('binding')}" th:errors="*{binding}"></span>
+												</div>
+												<div class="col-sm-4 mb-4">
+													<span class="form-label">Rounded Corners?</span>
+									 				<div><!-- So that yes and no can come in 1 line AFTER main label -->
+										 				<div class="form-check form-check-inline">
+															<input type="radio" class="form-check-input" th:field="*{roundedCorners}" value="Yes" >
+															<label th:for="productDetails.roundedCorners1" class="form-check-label">Yes</label>
+														</div>
+										 				<div class="form-check form-check-inline">
+															<input type="radio" class="form-check-input" th:field="*{roundedCorners}" value="No">
+															<label th:for="productDetails.roundedCorners2" class="form-check-label">No</label>
+														</div>
+													</div>
+													<span class="text-danger small" th:if="${#fields.hasErrors('roundedCorners')}" th:errors="*{roundedCorners}"></span>
+												</div>
+												<div class="col-sm-4 mb-4">
+													<span class="form-label">Hole Drilling?</span>
+									 				<div><!-- So that yes and no can come in 1 line AFTER main label -->
+										 				<div class="form-check form-check-inline">
+															<input type="radio" class="form-check-input" th:field="*{holeDrilling}" value="Yes" >
+															<label th:for="productDetails.holeDrilling1" class="form-check-label">Yes</label>
+														</div>
+										 				<div class="form-check form-check-inline">
+															<input type="radio" class="form-check-input" th:field="*{holeDrilling}" value="No">
+															<label th:for="productDetails.holeDrilling2" class="form-check-label">No</label>
+														</div>
+													</div>
+													<span class="text-danger small" th:if="${#fields.hasErrors('holeDrilling')}" th:errors="*{holeDrilling}"></span>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-sm-4">
+											<div class="mb-4">
+												<label th:for="productDetails.quantity" class="form-label">Quantity:</label>
+												<input type="number" step="1" min="1" max="999999" class="form-control" th:name="productDetails.quantity" th:id="productDetails.quantity" th:value="*{#numbers.formatInteger(quantity,1)}" placeholder="Only integers allowed">
+												<span class="text-danger small" th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}"></span>
+											</div>
+<!--
+ 											<div class="mb-4">
+												<label th:for="productDetails.deliveryDeadline" class="form-label">Delivery Deadline:</label>
+												<input type="date" id="deliveryDeadline" class="form-control" th:field="*{deliveryDeadline}" min="moment.tz(new Date(), 'YYYY-MM-DD', 'America/Chicago')">
+												<span class="text-danger small" th:if="${#fields.hasErrors('deliveryDeadline')}" th:errors="*{deliveryDeadline}"></span>
+											</div>
+-->
+											<div class="mb-4">
+												<label th:for="productDetails.printingTime" class="form-label">Printing Time:</label>
+													<select th:field="*{printingTime}" class="form-control">
+														<option th:value="${printingTime}" th:each="printingTime : ${homePageStringArrayMap.printingTimes}" th:text="${#strings.replace(printingTime,'_', ' ')}"></option>
+													</select>
+													<span class="text-danger small" th:if="${#fields.hasErrors('printingTime')}" th:errors="*{printingTime}"></span>
+											</div>
+										</div>
+										<div class="col-sm-8 mb-4">
+											<label th:for="productDetails.notes" class="form-label">Notes:</label>
+											<textarea rows="5" class="form-control" th:field="*{notes}" placeholder="Extra Notes"></textarea>
+											<span class="text-danger small" th:if="${#fields.hasErrors('notes')}" th:errors="*{notes}"></span>
+										</div>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-primary">Submit</button>
+								<br/>
+								<span class="text-muted" th:text="${homePageStringArrayMap.fileUploadMessage}"></span>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+			// img tag onerror attribute - if image not loaded
+			function reloadPage() {
+				console.log("Image failed to load. Reloading page...");
+				if(confirm("Image not loaded, reload page after 3 seconds?")){
+					setTimeout(() => location.reload(), 3000);
+				} else {
+					alert('Image failed to load. Please refresh the page after 1 minute.');
+				}
+			}
+			
+			function loadScript(src) {
+				return new Promise((resolve, reject) => {
+					const script = document.createElement('script');
+					script.src = src;
+					script.onload = resolve;
+					script.onerror = reject;
+					document.head.appendChild(script);
+				});
+			}
+
+			async function loadCustomJS() {
+				while (typeof customScript === 'undefined') {
+					console.log('Reloading...');
+					await new Promise(resolve => setTimeout(resolve, 1000)); // Adjust the interval as needed
+					await loadScript('/js/custom.js');
+				}
+				console.log('custom.js is loaded!');
+			}
+
+			loadCustomJS();
+			/*
+				The loadScript function is a Promise-based function to dynamically load a script.
+				The loadCustomJS function uses a loop to periodically check if customScript is defined.
+				If customScript is not defined, it reloads the script asynchronously using the loadScript function.
+				The loop continues until customScript is defined.
+				Remember to replace 'path/to/custom.js' with the actual path to your custom.js file. Adjust the interval in the setTimeout function as needed.
+				This approach avoids the need for constant page reloads and waits for the script to be loaded asynchronously before continuing.
+			*/
+		</script>
+	</body>
+</html>

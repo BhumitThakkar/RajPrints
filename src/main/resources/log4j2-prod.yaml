@@ -1,0 +1,40 @@
+# THIS IS CASE SENSITIVE FILE so for eg: "P"roperties should be "P"roperties and "a"ppenderRef should be "a"ppenderRef
+# Log4j2 Configuration File
+
+# Configure appenders
+appenders:
+  # Console appender configuration
+  Console:
+    name: LogToConsole
+    patternLayout:
+      pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS z}{CST} [%t] [%-5p] %X{clientIP, threadContextUUID} %c:%L - %msg%n"
+
+  # RollingFile appender configuration
+  RollingFile:
+    - name: LogToRollingFile
+      fileName: ${env:logFolder}/RajPrints.log
+      filePattern: "${env:logFolder}/$${date:yyyy-MM-dd}/RajPrints-%d{yyyy-MM-dd}-%i.log.gz"
+      patternLayout:
+        pattern: "%d{yyyy-MM-dd HH:mm:ss.SSS z}{CST} [%t] [%-5p] %X{clientIP, threadContextUUID} %c:%L - %msg%n"
+      policies:
+        sizeBasedTriggeringPolicy:
+          size: 50MB
+      defaultRollOverStrategy:
+        max: 10
+
+# Configure loggers
+loggers:
+  # Logger for com.emailingservice package
+  logger:
+    - name: com.rajprints
+      level: debug
+      additivity: false
+      appenderRef:
+        - ref: LogToConsole
+#        - ref: LogToRollingFile
+
+  # Root logger configuration
+  root:
+    level: error
+    appenderRef:
+      ref: LogToConsole
